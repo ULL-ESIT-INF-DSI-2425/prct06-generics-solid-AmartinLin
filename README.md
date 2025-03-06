@@ -132,3 +132,19 @@ const shortMessageNotifier = new Notifier(new ShortMessageService());
 shortMessageNotifier.sendNotification('Hello World!');
 ```
 El código viola el principio de inversión de dependencias (DIP) de los principios SOLID. La clase Notifier depende directamente de las implementaciones concretas ``EmailService`` y ``ShortMessageService``. Esto hace que el diseño sea rígido y difícil de extender. Lo que va en contra del principio de abierto/cerrado (OCP).
+
+### Ejercicio 6
+La jerarquia principal de clases es la siguiente:
+```typescript 
+class Bird {
+  fly(): void {
+    console.log("Flying...");
+  }
+}
+
+class Sparrow extends Bird {}
+
+class Penguin extends Bird {}
+```
+Como pingüino no puede volar se estaría violando el principio de segregación de interfaces (ISP) de los principios SOLID (Los clientes no deben verse obligados a depender de interfaces que no utilizan). 
+En lugar de tener una clase base Bird con un método fly(), podemos crear interfaces separadas para representar comportamientos específicos, como Flyable y Swimmable
