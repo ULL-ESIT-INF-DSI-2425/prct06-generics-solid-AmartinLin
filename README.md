@@ -97,3 +97,38 @@ printerScanner.print();
 printerScanner.scan();
 ```
 El código proporcionado viola el Principio de Segregación de Interfaces (ISP) de los principios SOLID. Debido a que una clase no debería implementar métodos que no necesita.
+
+### Ejercicio 5
+```typescript
+// Class that allows notifications by email to be sent
+class EmailService {
+  notify(message: string): void {
+    console.log(`Sending notification by email: ${message}`);
+  }
+}
+
+// Class that allows notifications by SMS to be sent
+class ShortMessageService {
+  notify(message: string): void {
+    console.log(`Sending notification by SMS: ${message}`);
+  }
+}
+
+// Class that makes use of different types of services to perform notifications
+class Notifier {
+  constructor(private notificationService: EmailService | ShortMessageService) {
+  }
+
+  sendNotification(message: string): void {
+    this.notificationService.notify(message);
+  }
+}
+
+// Client code
+const emailNotifier = new Notifier(new EmailService());
+emailNotifier.sendNotification('Hello World!');
+
+const shortMessageNotifier = new Notifier(new ShortMessageService());
+shortMessageNotifier.sendNotification('Hello World!');
+```
+El código viola el principio de inversión de dependencias (DIP) de los principios SOLID. La clase Notifier depende directamente de las implementaciones concretas ``EmailService`` y ``ShortMessageService``. Esto hace que el diseño sea rígido y difícil de extender. Lo que va en contra del principio de abierto/cerrado (OCP).
