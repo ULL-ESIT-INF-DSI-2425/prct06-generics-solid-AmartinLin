@@ -1,4 +1,4 @@
-import { describe, test, expect } from "vitest";
+import { describe, test, expect, vi } from "vitest";
 import { Printer } from "../src/ejercicio-4/Printer";
 import { Scanner } from "../src/ejercicio-4/Scanner";
 import { PrinterScanner } from "../src/ejercicio-4/PrinterScanner";
