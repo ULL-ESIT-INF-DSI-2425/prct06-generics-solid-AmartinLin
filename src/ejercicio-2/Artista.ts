@@ -1,45 +1,21 @@
-import { Disco } from "./Disco";
 import { Cancion } from "./Cancion";
+import { ColeccionMusical } from "./ColeccionMusical";
 
-interface IArtista {
-  canciones(): Cancion[];
-}
-
-/**
- * Clase para realizar operaciones relacionadas con un artista
- */
-class ArtistaCalculadora {
-  /**
-   * Obtiene todas las canciones de los discos del artista
-   * @param discos - Lista de discos del artista
-   * @returns - Lista de canciones
-   */
-  static obtenerCanciones(discos: Disco[]): Cancion[] {
-    let retorno_canciones: Cancion[] = [];
-    discos.forEach((disco) => {
-      disco.canciones.forEach((cancion) => {
-        retorno_canciones.push(cancion);
-      });
-    });
-    return retorno_canciones;
-  }
-}
-
-export class Artista implements IArtista {
+export class Artista<T extends ColeccionMusical> {
   private _nombre: string;
   private _oyentes: number;
-  private _discos: Disco[];
+  private _discografia: T[];
 
   /**
    * Constructor de la clase Artista
    * @param nombre - Nombre del artista
    * @param oyentes_mensuales - Número de oyentes mensuales
-   * @param discos - Lista de discos del artista
+   * @param discografia - Lista de discos o singles del artista
    */
-  constructor(nombre: string, oyentes_mensuales: number, discos: Disco[]) {
-    this._discos = discos;
-    this._oyentes = oyentes_mensuales;
+  constructor(nombre: string, oyentes_mensuales: number, discografia: T[]) {
     this._nombre = nombre;
+    this._oyentes = oyentes_mensuales;
+    this._discografia = discografia;
   }
 
   /**
@@ -57,10 +33,10 @@ export class Artista implements IArtista {
   }
 
   /**
-   * Getter de los discos del artista
+   * Getter de la discografía del artista
    */
-  get discos(): Disco[] {
-    return this._discos;
+  get discografia(): T[] {
+    return this._discografia;
   }
 
   /**
@@ -68,6 +44,12 @@ export class Artista implements IArtista {
    * @returns Lista de canciones
    */
   canciones(): Cancion[] {
-    return ArtistaCalculadora.obtenerCanciones(this._discos);
+    let retorno_canciones: Cancion[] = [];
+    this._discografia.forEach((item) => {
+      item.canciones.forEach((cancion) => {
+        retorno_canciones.push(cancion);
+      });
+    });
+    return retorno_canciones;
   }
 }

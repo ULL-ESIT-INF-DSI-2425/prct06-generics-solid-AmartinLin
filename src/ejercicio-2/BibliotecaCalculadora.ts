@@ -1,21 +1,21 @@
 import { Artista } from "./Artista";
-import { Disco } from "./Disco";
+import { ColeccionMusical } from "./ColeccionMusical";
 
 export class BibliotecaCalculadora {
-  constructor(private artistas: Artista[]) {}
+  constructor(private artistas: Artista<ColeccionMusical>[]) {}
 
   /**
    * Busca un disco por su nombre
    * @param nombreDisco - Nombre del disco
    * @returns El disco encontrado o null
    */
-  private buscarDisco(nombreDisco: string): Disco | null {
+  private buscarDisco(nombreItem: string): ColeccionMusical | null {
     for (const artista of this.artistas) {
-      const discoEncontrado = artista.discos.find(disco =>
-        disco.nombre.toLowerCase() === nombreDisco.toLowerCase()
+      const itemEncontrado = artista.discografia.find(item =>
+        item.nombre.toLowerCase() === nombreItem.toLowerCase()
       );
-      if (discoEncontrado) {
-        return discoEncontrado;
+      if (itemEncontrado) {
+        return itemEncontrado;
       }
     }
     return null;

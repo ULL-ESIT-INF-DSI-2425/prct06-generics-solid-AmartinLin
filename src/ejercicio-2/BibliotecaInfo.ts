@@ -1,14 +1,15 @@
 import { Artista } from "./Artista";
+import { ColeccionMusical } from "./ColeccionMusical";
 
 export class BibliotecaInfo {
-  constructor(private artistas: Artista[]) {}
+  constructor(private artistas: Artista<ColeccionMusical>[]) {}
 
   /**
    * Muestra la información de la biblioteca en forma de tabla
    */
   info(): void {
     const tabla = this.artistas.flatMap(artista =>
-      artista.discos.flatMap((disco) =>
+      artista.discografia.flatMap((disco) =>
         disco.canciones.map((cancion) => ({
           Artista: artista.nombre,
           Disco: disco.nombre,

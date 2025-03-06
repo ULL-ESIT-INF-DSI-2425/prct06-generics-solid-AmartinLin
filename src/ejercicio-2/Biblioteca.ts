@@ -2,6 +2,7 @@ import { BibliotecaCalculadora } from "./BibliotecaCalculadora";
 import { BibliotecaSearch } from "./BibliotecaSearch";
 import { BibliotecaInfo } from "./BibliotecaInfo";
 import { Artista } from "./Artista";
+import { ColeccionMusical } from "./ColeccionMusical";
 
 interface IBiblioteca {
   info(): void;
@@ -12,7 +13,7 @@ interface IBiblioteca {
 }
 
 export class Biblioteca implements IBiblioteca {
-  private _artistas: Artista[];
+  private _artistas: Artista<ColeccionMusical>[];
   private _info: BibliotecaInfo;
   private _search: BibliotecaSearch;
   private _calculadora: BibliotecaCalculadora;
@@ -21,7 +22,7 @@ export class Biblioteca implements IBiblioteca {
    * Constructor de la clase Biblioteca
    * @param artistas - Lista de artistas
    */
-  constructor(...artistas: Artista[]) {
+  constructor(...artistas: Artista<ColeccionMusical>[]) {
     this._artistas = artistas;
     this._info = new BibliotecaInfo(this._artistas);
     this._search = new BibliotecaSearch(this._artistas);

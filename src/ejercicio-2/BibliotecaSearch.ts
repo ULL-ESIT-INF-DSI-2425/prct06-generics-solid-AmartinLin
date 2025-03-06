@@ -1,7 +1,8 @@
 import { Artista } from "./Artista";
+import { ColeccionMusical } from "./ColeccionMusical";
 
 export class BibliotecaSearch {
-  constructor(private artistas: Artista[]) {}
+  constructor(private artistas: Artista<ColeccionMusical>[]) {}
 
   /**
    * Realiza una búsqueda en la biblioteca
@@ -9,12 +10,12 @@ export class BibliotecaSearch {
    */
   search(query: string): void {
     query = query.toLowerCase();
-    const artistasEncontrados: Artista[] = this.artistas.filter(artista =>
+    const artistasEncontrados: Artista<ColeccionMusical>[] = this.artistas.filter(artista =>
       artista.nombre.toLowerCase().includes(query)
     );
     if (artistasEncontrados.length > 0) {
       const tabla = artistasEncontrados.flatMap(artista =>
-        artista.discos.flatMap(disco =>
+        artista.discografia.flatMap(disco =>
           disco.canciones.map(cancion => ({
             Artista: artista.nombre,
             Disco: disco.nombre,
@@ -30,7 +31,7 @@ export class BibliotecaSearch {
       return;
     }
     const discosEncontrados = this.artistas.flatMap(artista =>
-      artista.discos.filter(disco =>
+      artista.discografia.filter(disco =>
         disco.nombre.toLowerCase().includes(query)
       ).map(disco => ({ artista, disco }))
     );
@@ -50,7 +51,7 @@ export class BibliotecaSearch {
       return;
     }
     const cancionesEncontradas = this.artistas.flatMap(artista =>
-      artista.discos.flatMap(disco =>
+      artista.discografia.flatMap(disco =>
         disco.canciones
           .filter(cancion => cancion.nombre.toLowerCase().includes(query))
           .map(cancion => ({

@@ -1,10 +1,5 @@
 import { Cancion } from "./Cancion";
-
-interface IDisco {
-  time(): number;
-  nSongs(): number;
-  reproducciones(): number;
-}
+import { ColeccionMusical } from "./ColeccionMusical";
 
 /**
  * Clase para realizar cálculos relacionados con un disco
@@ -29,7 +24,7 @@ class DiscoCalculadora {
   }
 }
 
-export class Disco implements IDisco {
+export class Disco implements ColeccionMusical {
   private _nombre: string;
   private _salida: number;
   private _canciones: Cancion[];
