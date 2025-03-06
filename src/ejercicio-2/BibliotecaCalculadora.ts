@@ -9,7 +9,7 @@ export class BibliotecaCalculadora {
    * @param nombreDisco - Nombre del disco
    * @returns El disco encontrado o null
    */
-  private buscarDisco(nombreItem: string): ColeccionMusical | null {
+  private buscarDisco(nombreItem: string): ColeccionMusical | undefined {
     for (const artista of this.artistas) {
       const itemEncontrado = artista.discografia.find(item =>
         item.nombre.toLowerCase() === nombreItem.toLowerCase()
@@ -18,7 +18,7 @@ export class BibliotecaCalculadora {
         return itemEncontrado;
       }
     }
-    return null;
+    return undefined;
   }
   
   /**

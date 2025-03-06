@@ -4,6 +4,7 @@ import { Disco } from "../src/ejercicio-2/Disco";
 import { Cancion } from "../src/ejercicio-2/Cancion";
 import { Biblioteca } from "../src/ejercicio-2/Biblioteca";
 import { ColeccionMusical } from "../src/ejercicio-2/ColeccionMusical";
+import { Single } from "../src/ejercicio-2/Single"
 
 // Eric Clapton
 const cancion : Cancion = {nombre: "Crossroads", tiempo: 314, genero: "Blues Rock", single: false, reproducciones: 810465};
@@ -207,3 +208,42 @@ describe("Clase Biblioteca", () => {
     expect(otraBiblioteca.vistasDeDisco("Fearless")).toBe(41447782 + 52958553)
   })
 })
+
+describe('Biblioteca', () => {
+  const cancion1 : Cancion = {nombre: "Crossroads", tiempo: 314, genero: "Blues Rock", single: false, reproducciones: 810465};
+  const cancion2 : Cancion = {nombre: "Layla", tiempo: 425, genero: "Blues Rock", single: false, reproducciones: 56832104};
+
+  const disco1 = new Disco("Disco 1", 2023, [cancion1]);
+  const single1 = new Single("Single 1", 2023, [cancion2]);
+
+  const artistaConDiscos = new Artista("Artista 1", 1000, [disco1]);
+  const artistaConSingles = new Artista("Artista 2", 2000, [single1]);
+
+  const biblioteca = new Biblioteca(artistaConDiscos, artistaConSingles);
+
+  test('info() muestra la información correctamente', () => {
+    const consoleSpy = vi.spyOn(console, 'table');
+    biblioteca.info();
+    expect(consoleSpy).toHaveBeenCalled();
+    consoleSpy.mockRestore();
+  });
+
+  test('search() encuentra artistas, discos y singles', () => {
+    const consoleSpy = vi.spyOn(console, 'table');
+    biblioteca.search("Artista 1");
+    expect(consoleSpy).toHaveBeenCalled();
+    consoleSpy.mockRestore();
+  });
+
+  test('numeroDeCanciones() devuelve el número correcto de canciones', () => {
+    expect(biblioteca.numeroDeCanciones("Disco 1")).toBe(1);
+  });
+
+  test('tiempoDeDisco() devuelve la duración correcta', () => {
+    expect(biblioteca.tiempoDeDisco("Single 1")).toBe(425);
+  });
+
+  test('vistasDeDisco() devuelve el número correcto de reproducciones', () => {
+    expect(biblioteca.vistasDeDisco("Single 1")).toBe(56832104);
+  });
+});
