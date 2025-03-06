@@ -2,6 +2,9 @@
 ## Procedimiento
 Hemos aceptado la tarea y realizado las actividades que se proponen.
 ## Actividades 
+### Ejercicio 2
+El código ha sido refactorizado para que cumpla los principios SOLID, en el caso de la bibioteca se ha editado ya que incumplia el principio solid de responsabilidad única (SRP) al encargarse de demasiadas tareas, a lo que se ha creado 3 clases para suplir el cambio, `BibliotecaInfo`, `BibliotecaSearch` y `BibliotecaCalculadora`
+
 ### Ejercicio 3
 ```typescript
 import * as fs from "fs";

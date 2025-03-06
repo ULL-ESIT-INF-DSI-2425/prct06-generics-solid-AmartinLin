@@ -1,9 +1,11 @@
-import { Disco } from "./Disco";
+import { BibliotecaCalculadora } from "./BibliotecaCalculadora";
+import { BibliotecaSearch } from "./BibliotecaSearch";
+import { BibliotecaInfo } from "./BibliotecaInfo";
 import { Artista } from "./Artista";
 
 interface IBiblioteca {
   info(): void;
-  search(parametro: string) : void;
+  search(parametro: string): void;
   numeroDeCanciones(nombreDisco: string): number;
   tiempoDeDisco(nombreDisco: string): number;
   vistasDeDisco(nombreDisco: string): number;
@@ -11,146 +13,60 @@ interface IBiblioteca {
 
 export class Biblioteca implements IBiblioteca {
   private _artistas: Artista[];
+  private _info: BibliotecaInfo;
+  private _search: BibliotecaSearch;
+  private _calculadora: BibliotecaCalculadora;
 
   /**
    * Constructor de la clase Biblioteca
-   * @param artistas - lista de artistas 
+   * @param artistas - Lista de artistas
    */
   constructor(...artistas: Artista[]) {
     this._artistas = artistas;
+    this._info = new BibliotecaInfo(this._artistas);
+    this._search = new BibliotecaSearch(this._artistas);
+    this._calculadora = new BibliotecaCalculadora(this._artistas);
   }
 
   /**
-   * Nos da información de nuestra biblioteca en forma de tabla
-   * | index | nombre del artista | nombre del disco | Canción | Duracion en segundos | Género | si es single o no | número de reproducciones
+   * Muestra la información de la biblioteca en forma de tabla
    */
   info(): void {
-    const tabla = this._artistas.flatMap(artista =>
-      artista.discos.flatMap((disco) =>
-        disco.canciones.map((cancion) => ({
-          Artista: artista.nombre,
-          Disco: disco.nombre,
-          Canción: cancion.nombre,
-          Duración: `${cancion.tiempo} seg`,
-          Género: cancion.genero,
-          Single: cancion.single ? "✅" : "❌",
-          Reproducciones: cancion.reproducciones
-        }))
-      )
-    );
-    console.table(tabla);
-  }  
+    this._info.info();
+  }
 
   /**
-   * Nos permite hacer una búsqueda a toda la biblioteca
-   * (mediante el nombre únicamente)
-   * @param query - String con el nombre de artista, disco o cancion
-   * @returns tabla con los datos relacionados
+   * Realiza una búsqueda en la biblioteca
+   * @param query - Término de búsqueda
    */
   search(query: string): void {
-    query = query.toLowerCase();
-    const artistasEncontrados: Artista[] = this._artistas.filter(artista =>
-      artista.nombre.toLowerCase().includes(query)
-    );
-    if (artistasEncontrados.length > 0) {
-      const tabla = artistasEncontrados.flatMap(artista =>
-        artista.discos.flatMap(disco =>
-          disco.canciones.map(cancion => ({
-            Artista: artista.nombre,
-            Disco: disco.nombre,
-            Canción: cancion.nombre,
-            Duración: `${cancion.tiempo} seg`,
-            Género: cancion.genero,
-            Single: cancion.single ? "✅" : "❌",
-            Reproducciones: cancion.reproducciones
-          }))
-        )
-      );
-      console.table(tabla);
-      return;
-    }
-    const discosEncontrados = this._artistas.flatMap(artista =>
-      artista.discos.filter(disco =>
-        disco.nombre.toLowerCase().includes(query)
-      ).map(disco => ({ artista, disco }))
-    );
-    if (discosEncontrados.length > 0) {
-      const tabla = discosEncontrados.flatMap(({ artista, disco }) =>
-        disco.canciones.map(cancion => ({
-          Artista: artista.nombre,
-          Disco: disco.nombre,
-          Canción: cancion.nombre,
-          Duración: `${cancion.tiempo} seg`,
-          Género: cancion.genero,
-          Single: cancion.single ? "✅" : "❌",
-          Reproducciones: cancion.reproducciones
-        }))
-      );
-      console.table(tabla);
-      return;
-    }
-    const cancionesEncontradas = this._artistas.flatMap(artista =>
-      artista.discos.flatMap(disco =>
-        disco.canciones
-          .filter(cancion => cancion.nombre.toLowerCase().includes(query))
-          .map(cancion => ({
-            Artista: artista.nombre,
-            Disco: disco.nombre,
-            Canción: cancion.nombre,
-            Duración: `${cancion.tiempo} seg`,
-            Género: cancion.genero,
-            Single: cancion.single ? "✅" : "❌",
-            Reproducciones: cancion.reproducciones
-          }))
-      )
-    );
-    console.table(cancionesEncontradas);
+    this._search.search(query);
   }
 
   /**
-   * Método privado auxiliar que nos permite buscar un disco mediante el nombre
-   * @param nombreDisco - nombre del disco
-   * @returns el disco en concreto o nada
-   */
-  private buscarDisco(nombreDisco: string): Disco | null {
-    for (const artista of this._artistas) {
-      const discoEncontrado = artista.discos.find(disco =>
-        disco.nombre.toLowerCase() === nombreDisco.toLowerCase()
-      );
-      if (discoEncontrado) {
-        return discoEncontrado;
-      }
-    }
-    return null; 
-  }
-  
-  /**
-   * numero total de todas las canciones de un disco
-   * @param nombreDisco - nombre de un disco
-   * @returns numero de canciones (si esque el disco existe)
+   * Obtiene el número de canciones de un disco
+   * @param nombreDisco - Nombre del disco
+   * @returns Número de canciones
    */
   numeroDeCanciones(nombreDisco: string): number {
-    const disco = this.buscarDisco(nombreDisco);
-    return disco ? disco.nSongs() : 0;
+    return this._calculadora.numeroDeCanciones(nombreDisco);
   }
 
   /**
-   * Tiempo que dura un disco según la suma de sus canciones
-   * @param nombreDisco - nombre del disco
-   * @returns numero de segundos que dura el disco
+   * Obtiene la duración total de un disco
+   * @param nombreDisco - Nombre del disco
+   * @returns Duración en segundos
    */
   tiempoDeDisco(nombreDisco: string): number {
-    const disco = this.buscarDisco(nombreDisco);
-    return disco ? disco.time() : 0;
+    return this._calculadora.tiempoDeDisco(nombreDisco);
   }
 
   /**
-   * numero de reproducciones total de todas las canciones de un disco
-   * @param nombreDisco - nombre de un disco
-   * @returns numero de reproducciones (si esque el disco existe)
+   * Obtiene el número de reproducciones de un disco
+   * @param nombreDisco - Nombre del disco
+   * @returns Número de reproducciones
    */
   vistasDeDisco(nombreDisco: string): number {
-    const disco = this.buscarDisco(nombreDisco);
-    return disco ? disco.reproducciones() : 0;
+    return this._calculadora.vistasDeDisco(nombreDisco);
   }
 }

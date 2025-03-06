@@ -1,12 +1,32 @@
 import { Cancion } from "./Cancion";
 
-/**
- * Interfaz de Disco
- */
 interface IDisco {
   time(): number;
   nSongs(): number;
   reproducciones(): number;
+}
+
+/**
+ * Clase para realizar cálculos relacionados con un disco
+ */
+class DiscoCalculadora {
+  /**
+   * Calcula la duración total del disco
+   * @param canciones - Lista de canciones del disco
+   * @returns - Duración total en segundos
+   */
+  static calcularDuracion(canciones: Cancion[]): number {
+    return canciones.reduce((acc, cancion) => acc + cancion.tiempo, 0);
+  }
+
+  /**
+   * Calcula el número total de reproducciones del disco
+   * @param canciones - Lista de canciones del disco
+   * @returns - Número total de reproducciones
+   */
+  static calcularReproducciones(canciones: Cancion[]): number {
+    return canciones.reduce((acc, cancion) => acc + cancion.reproducciones, 0);
+  }
 }
 
 export class Disco implements IDisco {
@@ -15,9 +35,9 @@ export class Disco implements IDisco {
   private _canciones: Cancion[];
 
   /**
-   * Constructor de la calse Disco
+   * Constructor de la clase Disco
    * @param nombre - Nombre del disco
-   * @param salida - Año de saida del disco
+   * @param salida - Año de salida del disco
    * @param canciones - Lista de canciones que tiene el disco
    */
   constructor(nombre: string, salida: number, canciones: Cancion[]) {
@@ -27,28 +47,28 @@ export class Disco implements IDisco {
   }
 
   /**
-   * Nos dice el numero de canciones que tiene el disco
-   * @returns - numero de canciones
+   * Nos dice el número de canciones que tiene el disco
+   * @returns - Número de canciones
    */
   nSongs(): number {
     return this._canciones.length;
   }
 
   /**
-   * Cuanto dura el total del disco
-   * @returns - numero de segundo que dura el disco
+   * Cuánto dura el total del disco
+   * @returns - Número de segundos que dura el disco
    */
   time(): number {
-    return this._canciones.reduce((acc, cancion) => acc + cancion.tiempo, 0);
+    return DiscoCalculadora.calcularDuracion(this._canciones);
   }
 
   /**
-   * Numero de reproducciones que tiene el disco
-   * teniendo en cuenta las vistas de cada cancion
-   * @returns - numero de visitas
+   * Número de reproducciones que tiene el disco
+   * teniendo en cuenta las vistas de cada canción
+   * @returns - Número de visitas
    */
   reproducciones(): number {
-    return this._canciones.reduce((acc, cancion) => acc + cancion.reproducciones, 0);
+    return DiscoCalculadora.calcularReproducciones(this._canciones);
   }
 
   /**
