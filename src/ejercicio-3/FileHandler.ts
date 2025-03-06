@@ -16,7 +16,11 @@ export class FileHandler implements IFileHandler {
     try {
       return fs.readFileSync(this.filePath, "utf-8");
     } catch (error) {
-      throw new Error(`Error al leer el archivo: ${error.message}`);
+      if (error instanceof Error) {
+        throw new Error(`Error al leer el archivo: ${error.message}`);
+      } else {
+        throw new Error(`Error al leer el archivo: Error desconocido`);
+      }
     }
   }
 
@@ -28,7 +32,11 @@ export class FileHandler implements IFileHandler {
     try {
       fs.writeFileSync(this.filePath, data, "utf-8");
     } catch (error) {
-      throw new Error(`Error al escribir en el archivo: ${error.message}`);
+      if (error instanceof Error) {
+        throw new Error(`Error al escribir en el archivo: ${error.message}`);
+      } else {
+        throw new Error(`Error al escribir en el archivo: Error desconocido`);
+      }
     }
   }
 }

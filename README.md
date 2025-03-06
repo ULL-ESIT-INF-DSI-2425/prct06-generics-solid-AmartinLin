@@ -151,3 +151,5 @@ class Penguin extends Bird {}
 ```
 Como pingüino no puede volar se estaría violando el principio de segregación de interfaces (ISP) de los principios SOLID (Los clientes no deben verse obligados a depender de interfaces que no utilizan). 
 En lugar de tener una clase base Bird con un método fly(), podemos crear interfaces separadas para representar comportamientos específicos, como Flyable y Swimmable
+
+[![Coverage Status](https://coveralls.io/repos/github/ULL-ESIT-INF-DSI-2425/prct06-generics-solid-AmartinLin/badge.svg?branch=main)](https://coveralls.io/github/ULL-ESIT-INF-DSI-2425/prct06-generics-solid-AmartinLin?branch=main)
