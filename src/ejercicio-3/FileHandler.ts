@@ -8,6 +8,10 @@ export interface IFileHandler {
 export class FileHandler implements IFileHandler {
   constructor(private filePath: string) {}
 
+  /**
+   * Reads the content of a file
+   * @returns - string - content inside the file 
+   */
   read(): string {
     try {
       return fs.readFileSync(this.filePath, "utf-8");
@@ -16,6 +20,10 @@ export class FileHandler implements IFileHandler {
     }
   }
 
+  /**
+   * Edit the content of a file
+   * @param data - String - data that needs to be in the file
+   */
   write(data: string): void {
     try {
       fs.writeFileSync(this.filePath, data, "utf-8");
