@@ -26,7 +26,6 @@ describe("SeriesCollection", () => {
       { title: "Game of Thrones", year: 2011 },
       { title: "Planet Earth", year: 2006 }
     ]);
-    console.log(sampleVideos);
     series1.remove(sampleVideos[0]);
     expect(series1.getAll().length).toBe(2);
   });
