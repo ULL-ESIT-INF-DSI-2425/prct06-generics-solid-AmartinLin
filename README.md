@@ -1,2 +1,99 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/hGiCucuU)
-[![Open in Codespaces](https://classroom.github.com/assets/launch-codespace-2972f46106e565e64193e422d61a12cf1da4916b45550586e14ef0a7c637dd04.svg)](https://classroom.github.com/open-in-codespaces?assignment_repo_id=18545831)
+# Práctica 6 - principios SOLID
+## Procedimiento
+Hemos aceptado la tarea y realizado las actividades que se proponen.
+## Actividades 
+### Ejercicio 3
+```typescript
+import * as fs from "fs";
+
+class FileManager {
+  constructor(private filePath: string) {}
+
+  // Reads file
+  public readFile(): string {
+    try {
+      const content: string = fs.readFileSync(this.filePath, "utf-8");
+      return content;
+    } catch (error) {
+      console.error("Error al leer el archivo");
+      return "";
+    }
+  }
+
+  // Writes file
+  public writeFile(data: string): void {
+    try {
+      fs.writeFileSync(this.filePath, data, "utf-8");
+      console.log("Archivo escrito exitosamente.");
+    } catch (error) {
+      console.error("Error al escribir en el archivo");
+    }
+  }
+}
+
+// Client code
+const fileManager = new FileManager("example.txt");
+
+// Reading content
+const currentContent = fileManager.readFile();
+console.log("Current content:", currentContent);
+
+// Writing content
+const newData = "This is new content to be written into the file.";
+fileManager.writeFile(newData);
+
+// Updating content
+const updatedContent = fileManager.readFile();
+console.log("Updated content:", updatedContent);
+```
+El código proporcionado viola los principios de responsabilidad única (SRP) ya que  file manager tiene más de una responsabilidad y viola el principio de inversión de dependencias (DIP), ya que la clase `FileManager` depende directamente de fs que es una implementación concreta, lo que dificulta la sustitución de otro tipo de mecanismos.
+
+### Ejercicio 4
+```typescript
+interface PrintableScannable {
+  print(): void
+  scan(): void
+}
+
+class Printer implements PrintableScannable {
+  print(): void {
+    console.log('Printing...')
+  }
+
+  scan(): void { }
+}
+
+class Scanner implements PrintableScannable {
+  print(): void { }
+
+  scan(): void {
+    console.log('Scanning...')
+  }
+}
+
+class PrinterScanner implements PrintableScannable {
+  print(): void {
+    console.log('Printing...')
+  }
+
+  scan(): void {
+    console.log('Scanning...')
+  }
+}
+
+// Client code
+const printer = new Printer();
+// Printing
+printer.print();
+
+const scanner = new Scanner();
+// Scanning
+scanner.scan();
+
+const printerScanner = new PrinterScanner();
+// Printing
+printerScanner.print();
+// Scanning
+printerScanner.scan();
+```
+El código proporcionado viola el Principio de Segregación de Interfaces (ISP) de los principios SOLID. Debido a que una clase no debería implementar métodos que no necesita.
