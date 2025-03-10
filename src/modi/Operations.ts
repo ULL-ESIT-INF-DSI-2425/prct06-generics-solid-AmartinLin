@@ -1,28 +1,28 @@
 //import { Append } from "./Append";
 
-export class Operations<T, U> {
+export class Operations<T> {
+  constructor(private lista: T[]) {}
 
   /**
    * Añade los elementos de la segunda lista al final de la primera
-   * @param lista1 - T[]
-   * @param lista2 - U[]
+   * @param lista2 - T[]
    * @returns lista nueva
    */
-  append(lista1: T[], lista2: U[]) : (T | U)[] {
-    let nueva_lista: (T | U)[] = lista1;
+  append(lista2: T[]): T[] {
+    let nueva_lista: T[] = this.lista;
     for (let elementB of lista2) {
       nueva_lista = [...nueva_lista, elementB];
     }
     return nueva_lista;
-  };
+  }
 
   /**
    * Concatena una serie de listas una detras de otra en una sola
-   * @param listas - (T | U)[] Conjunto de listas 
+   * @param listas - T[] Conjunto de listas
    * @returns lista conjunto
    */
-  concatenate(...listas: (T | U)[][]): (T | U)[] {
-    let retorno: (T | U)[] = [];
+  concatenate(...listas: T[][]): T[] {
+    let retorno: T[] = this.lista;
     for (let lista of listas) {
       for (let elementB of lista) {
         retorno = [...retorno, elementB];
@@ -34,34 +34,53 @@ export class Operations<T, U> {
   /**
    * Filtra los elementos de una lista según un criterio
    * @param operation - operación que filtrará los elementos de la lista
-   * @param lista 
-   * @returns 
+   * @returns
    */
-  filter<T>(operation: (item: T) => boolean, lista: T[]): T[] {
+  filter<T>(operation: (item: T) => boolean): T[] {
     let retorno: T[] = [];
-    for (let element of lista) {
+    for (let element of this.lista) {
       if (operation(element)) retorno = [...retorno, element];
     }
     return retorno;
   }
 
-  length<T>(lista: T[]): number {
+  /**
+   * Devuelve la langitud del array del objeto
+   * @returns number
+   */
+  length(): number {
     let contador: number = 0;
-    for (let _ in lista) {
+    for (let _ in this.lista) {
       contador++;
     }
     return contador;
   }
 
-  map<T>(operation: (item: T) => T, iterable: (T)[]): T[] {
+  /**
+   * Devuelve un array con la operación indicada para cada elemento del array
+   * @param operation - expresión que se ejecutará en cada elemento
+   * @returns array T[]
+   */
+  map<T>(operation: (item: T) => T): T[] {
     let result: T[] = [];
-    for (let item of iterable) {
+    for (let item of this.lista) {
       result = [...result, operation(item)];
     }
     return result;
   }
-}
 
-const a = new Operations();
-const hola = a.concatenate([1,2,3], ["hola"], [6, 7, 8]);
-console.log(hola)
+  /**
+ * Hace la operacion reduce, Toma la operación y la aplica a todos
+ * los elementos del array, a partir del elemento que se le indique
+ * @param operation - operación que se le aplicará a los elementos
+ * @param acc_init - valor del que se empieza a operar (a partir de que se va a ir sumando)
+ * @returns valor final de haber hecho las operaciones al acumulador inicial.
+ */
+  reduce<T>(operation: (acc: T, item: T) => T, acc_init: T): T {
+    let retorno: T = acc_init;
+    for (let i = 0; i < this.length(); i++) {
+      retorno = operation(retorno, this.lista[i]);
+    }
+    return retorno;
+  }
+}
