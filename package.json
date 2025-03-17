@@ -9,8 +9,10 @@
     "test": "vitest run",
     "onetest": "vitest run test/modi",
     "testmodi": "vitest run test/modi",
+    "testpract7": "vitest run test/practica7modi",
     "coverage": "vitest run --coverage"
   },
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ULL-ESIT-INF-DSI-2425/prct06-generics-solid-AmartinLin.git"
