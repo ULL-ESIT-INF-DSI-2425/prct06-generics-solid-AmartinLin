@@ -1,4 +1,4 @@
-import { Meteo, Observable, WeatherChanges } from "./estacionMeteo";
+import { Meteo, Observable, WeatherChanges } from "./estacionMeteo.js";
 
 /**
  * Interface for observer classes

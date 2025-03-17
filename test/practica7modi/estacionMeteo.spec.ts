@@ -1,6 +1,6 @@
 import { describe, test, expect, vi } from "vitest";
-import { Meteo } from "../../src/practica7modi/estacionMeteo"
-import { MeteoObserver } from "../../src/practica7modi/elementoObservador"
+import { Meteo } from "../../src/practica7modi/estacionMeteo.js"
+import { MeteoObserver } from "../../src/practica7modi/elementoObservador.js"
 
 describe("cambioTemp", () => {
   test("cambio de temperatura", () => {

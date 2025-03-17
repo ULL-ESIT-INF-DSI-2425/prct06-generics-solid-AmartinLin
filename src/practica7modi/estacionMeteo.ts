@@ -1,4 +1,4 @@
-import { Observer } from "./elementoObservador";
+import { Observer } from "./elementoObservador.js";
 
 /**
  * Interface for observable classes
